@@ -1,0 +1,87 @@
+{% extends "WHBlogBundle:Backend:main.html.twig" %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block ariane %}{{ parent() }}<li><a href="{{ path('wh_admin_blog_posts') }}">liste</a></li>{% endblock %}
+
+{% block title_right %}<a href="{{ path('wh_admin_blog_post_create') }}" class="btn btn-success pull-right" {{ Smart.modal() }}><i class="fa fa-plus"></i> Nouveau</a>{% endblock %}
+
+{% block subtitle %}Liste{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-4">
+            {{ Smart.openBox() }}
+
+            <div class="widget-body">
+
+                {{ form_start(form) }}
+
+                <div class="padded">
+                    {{ form_row(form.Template) }}
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="submit" class="btn btn-primary">Trier</button>
+
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+
+            {{ Smart.closeBox() }}
+        </div>
+
+        <div class="col-md-8">
+
+
+            {{ Smart.openTable('fa-list', 'List') }}
+
+            <thead>
+            <tr>
+                <th></th>
+                <th>Date</th>
+                <th>Titre</th>
+                <th>Type</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for entity in entities %}
+                <tr class="{% if entity.status == 'draft' %}danger{% endif %}">
+
+                    <td class="col-md-2">
+                        <a href="{{ path('wh_admin_blog_post_update', { 'Post': entity.id }) }}" class="btn btn-xs btn-primary"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('wh_admin_blog_post_delete', { 'Post': entity.id }) }}" class="btn btn-xs btn-danger" {{ Smart.confirm('Etes vous sûre de vouloir supprimer ? ') }}><i class="fa fa-trash-o"></i></a>
+                        <a href="{{ path('wh_admin_blog_post_publish', { 'Post': entity.id }) }}" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
+                    </td>
+                    <td>{{ entity.created | date('d/m/Y h:i') }}</td>
+                    <td>{{ entity.name }}<br/><small><a href="{{ path('wh_front_post_view', {'Slug' : entity.slug}) }}" target="_blank">{{ path('wh_front_post_view', {'Slug' : entity.slug}) }}</a></small></td>
+                    <td>{{ entity.template.name }}</td>
+                    <td>{{ entity.score }}</td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+
+            {{ Smart.closeTable(pagination, entities) }}
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascript %}
+
+    {{ parent() }}
+
+    {{ Smart.modalSuccess() }}
+
+{% endblock %}

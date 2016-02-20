@@ -1,0 +1,186 @@
+{% extends "WHCmsBundle:Backend:main.html.twig" %}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% block meta_title %} {{ parent() }} : {{ Post.name }} {% endblock %}
+{% block ariane %}{{ parent() }}<li>Edition</li>{% endblock %}
+{% block subtitle %}Edition d'une page{% endblock %}
+
+{% block content %}
+
+    {{ form_start(form) }}
+
+    <div class="row">
+
+        <div class="col-md-8">
+
+            <div class="form-group form-group-lg">
+                {{ form_widget(form.name) }}
+            </div>
+
+            <div class="jarviswidget jarviswidget-color-blueDark" data-widget-colorbutton="false"
+                 data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false"
+                 data-widget-deletebutton="false">
+
+                <header>
+                    <ul class="nav nav-tabs pull-left in">
+                        <li class="active"><a data-toggle="tab" href="#folioPage"><i class="fa fa-file-o"></i> Edition de l'article </a></li>
+                        <li><a data-toggle="tab" href="#folioSeo"><i class="fa  fa-arrow-circle-o-up"></i> Seo </a></li>
+                        <li><a data-toggle="tab" href="#folioTechnique"><i class="fa  fa-cog"></i> Techniques </a></li>
+                    </ul>
+
+                    <div class="widget-toolbar">
+                        <a href="{{ path('wh_front_post_view', {'Slug' : Post.slug}) }}" target="_blank" class="btn btn-success btn-xs"><i class="fa fa-eye"></i> Voir la page</a>
+                    </div>
+
+                </header>
+
+                <div>
+
+                    <div class="widget-body">
+
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="folioPage">
+
+                                <fieldset>
+
+                                    <legend>Entête</legend>
+
+                                    {{ form_row(form.title) }}
+                                    {{ form_row(form.body) }}
+
+
+                                </fieldset>
+
+                            </div>
+
+                            <div class="tab-pane" id="folioSeo">
+
+                                {{ include('WHCmsBundle:Backend:Seo/form.html.twig', { 'form': form.Seo }) }}
+
+                            </div>
+
+                            <div class="tab-pane" id="folioTechnique">
+
+                                <div class="row">
+                                    <div class="col-md-6">{{ form_row(form.slugTechnique) }}</div>
+                                    <div class="col-md-6">
+                                        <label>Slug : </label>
+                                        <input type="text" disabled="disabled" class="form-control" value="{{ Post.slug }}">
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            {{ Smart.openBox('fa-save', 'Publication') }}
+
+            <div class="widget-body">
+
+                {{ form_row(form.page) }}
+                {{ form_row(form.resume) }}
+                {% block side_barre %}{% endblock %}
+                <hr/>
+                {{ form_row(form.score) }}
+                {{ form_row(form.status) }}
+
+                <div class="form-actions">
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            {{ form_widget(form.save_and_back) }}
+
+                            {{ form_widget(form.save_and_stay) }}
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{ Smart.closeBox() }}
+
+            {{ Smart.openBox('fa-list', 'Vignette') }}
+
+            <div class="widget-body">
+
+                {{ include('WHCmsBundle:Backend:Media/image-form.html.twig', { 'form': form.thumb }) }}
+
+            </div>
+
+            {{ Smart.closeBox() }}
+
+
+        </div>
+
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+
+{% block javascript %}
+
+    {{ parent() }}
+    {{ elfinder_tinymce_init4('tinycme') }}
+    {{ tinymce_init() }}
+    {{ form_javascript(form) }}
+
+    <script>
+
+        $(document).ready(function() {
+
+            addEl($('.blocs-container'), $('#btn-add-bloc'), 'BlocNum');
+
+            $(function() {
+
+                $('.blocs-container').sortable({
+                    start: function(event, ui) {
+                        var start_pos = ui.item.index();
+                        ui.item.data('start_pos', start_pos);
+                    },
+                    change: function(event, ui) {
+                        var start_pos = ui.item.data('start_pos');
+                        var index = ui.placeholder.index();
+                        if (start_pos < index) {
+                            $('.blocs-container .bloc:nth-child(' + index + ')').addClass('highlights');
+                        } else {
+                            $('.blocs-container .bloc:eq(' + (index + 1) + ')').addClass('highlights');
+                        }
+                    },
+                    update: function(event, ui) {
+
+                        $('.blocs-container .bloc').removeClass('highlights');
+
+
+                        $('.blocs-container .bloc').each(function(index) {
+
+                            $('input.pos', $(this)).val(index);
+
+                        });
+
+                    }
+                });
+
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

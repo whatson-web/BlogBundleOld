@@ -1,0 +1,10 @@
+whad_blog:
+    resource: "@WHBlogBundle/Resources/config/routing-admin.yml"
+    prefix:   /admin/post
+
+
+#Attention pour que ça fonctionne, il faut que se soit la dernière route sinon ça écrasera toutes les autres
+whpub_blog_post:
+    path:     /post/{slug}.html
+    defaults: { _controller: WHBlogBundle:PostFront:view }
+

@@ -1,0 +1,22 @@
+## Pages :
+whad_blog_post:
+    path:     /post
+    defaults: { _controller: WHBlogBundle:Post:adminIndex, Page: 0 }
+    requirements:
+        Page:  \d*
+
+whad_blog_post_create:
+    path:     /post/create
+    defaults: { _controller: WHBlogBundle:Post:adminCreate }
+
+whad_blog_post_update:
+    path:     /post/update/{Post}
+    defaults: { _controller: WHBlogBundle:Post:adminUpdate }
+
+whad_blog_post_delete:
+    path:     /post/delete/{Post}
+    defaults: { _controller: WHBlogBundle:Post:adminDelete }
+
+whad_blog_post_publish:
+    path:     /post/publish/{Post}
+    defaults: { _controller: WHBlogBundle:Post:adminPublish }
