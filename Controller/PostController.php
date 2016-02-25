@@ -3,12 +3,8 @@
 namespace WH\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use APP\BlogBundle\Entity\Post;
 
 /**
  * @Route("/post")
@@ -17,37 +13,44 @@ class PostController extends Controller
 {
 
     /**
-     * @Route("/{Slug}.html", name="wh_front_post_view" )
-     * @param $Post
-     * @param Request $request
+     * @Route("/{slug}.html", name="wh_front_post_view" )
+     *
+     * @param $slug
      * @return \Symfony\Component\HttpFoundation\Response
-     * @ParamConverter("Post", class="APPBlogBundle:Post")
      */
     public function viewAction($slug)
     {
 
         $em = $this->getDoctrine()->getManager();
 
-        $repoPost = $em->getRepository('WHBlogBundle:Post');
-        $repoPage = $em->getRepository('WHCmsBundle:Page');
+        $Post = $em->getRepository('APPBlogBundle:Post');
+        $Page = $em->getRepository('APPCmsBundle:Page');
 
-        $Post = $repoPost->findOneBySlug($slug);
+        $post = $Post->findOneBySlug($slug);
 
-        if(!$Post) {
+        if (!$post) {
 
-            //Là faudrait aller voir dans l'historique
             throw $this->createNotFoundException('Cette page n’existe plus ou a été déplacée');
-
         }
 
-        $path = $repoPage->getPath($Post->getPage());
+        $path = $Page->getPath($post->getPage());
 
-
-        return $this->render('WHBlogBundle:Post:front/'.$Post->getTemplate().'.html.twig', array(
-            'Post' => $Post,
+        $renderVars = array(
+            'post' => $post,
             'path' => $path,
-            'Page' => $Post->getPage()
-        ));
+        );
+
+        $view = $post->getTemplate()->getTplt();
+
+        if ($this->get('templating')->exists($view)) {
+
+            return $this->render($view, $renderVars);
+
+        } else {
+
+            return $this->render('WHBlogBundle:Post:view.html.twig', $renderVars);
+
+        }
 
     }
 

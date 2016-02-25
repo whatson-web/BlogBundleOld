@@ -195,7 +195,7 @@ class PostController extends Controller
 
             $request->getSession()->getFlashBag()->add('success', 'Post modifiée');
 
-            if ($form->get('save_and_stay')->isClicked()) return $this->redirect($this->generateUrl('whad_blog_post_update', array('Post' => $Post->getId())));
+            if ($form->get('save_and_stay')->isClicked()) return $this->redirect($this->generateUrl('wh_admin_blog_post_update', array('Post' => $Post->getId())));
 
             return $this->redirect($this->generateUrl('wh_admin_blog_posts'));
 
