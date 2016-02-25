@@ -12,6 +12,7 @@ use WH\CmsBundle\Model\TemplateRepository;
 use WH\CmsBundle\Model\PageRepository;
 use WH\CmsBundle\Form\FileType;
 use WH\CmsBundle\Form\SeoType;
+use WH\BlogBundle\Form\Backend\PostBlocType;
 
 class PostUpdateType extends AbstractType
 {
@@ -30,8 +31,8 @@ class PostUpdateType extends AbstractType
             ->add('slugReplace', 'text', array('label' => '', 'required' => false, 'attr' => array('class' => 'form-control sm', 'placeholder' => 'Nouvelle valeur de l’url')))
             ->add('slugTechnique', 'text', array('label' => 'Slug technique', 'required' => false))
             ->add('resume', 'textarea',  array('label' => 'Résumé', 'required' => false))
-            ->add('body', 'text', array('label' => 'Corp de texte', 'required' => false, 'attr' => array('class' => 'tinymce')))
-            ->add('thumb', new FileType(), array('label' => 'Miniature', 'required' => false))
+            ->add('body', 'textarea', array('label' => 'Corp de texte', 'required' => false, 'attr' => array('class' => 'tinymce')))
+            ->add('thumb', new FileType(), array('label' => false, 'required' => false))
             ->add('Seo', new SeoType())
 
             ->add('page', 'entity', array(
@@ -49,6 +50,14 @@ class PostUpdateType extends AbstractType
                         }
 
                 ))
+
+            ->add('postBlocs', 'collection', array(
+                    'type'          => new PostBlocType(),
+                    'allow_add'     => true,
+                    'allow_delete'  => true,
+                    'by_reference'  => false
+                ))
+
             ->add('save_and_stay', 'submit', array('label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-success')))
             ->add('save_and_back', 'submit', array('label' => 'Enregistrer et quitter ', 'attr' => array('class' => 'btn btn-primary')))
         ;

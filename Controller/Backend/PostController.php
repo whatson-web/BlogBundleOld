@@ -4,10 +4,6 @@ namespace WH\BlogBundle\Controller\Backend;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -16,7 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use APP\BlogBundle\Entity\Post;
 use WH\BlogBundle\Form\Backend\PostType;
 use WH\BlogBundle\Form\Backend\PostUpdateType;
+use WH\CmsBundle\Form\Backend\BlocType;
 use WH\CmsBundle\Model\TemplateRepository;
+use WH\CmsBundle\Entity\Bloc;
 
 /**
  * @Route("/admin/blog/post")
@@ -257,7 +255,6 @@ class PostController extends Controller
 
 
     }
-
 
 
 }

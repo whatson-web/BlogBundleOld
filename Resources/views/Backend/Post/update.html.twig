@@ -48,8 +48,28 @@
                                     {{ form_row(form.title) }}
                                     {{ form_row(form.body) }}
 
+                                </fieldset>
+
+                                <fieldset>
+
+
+                                    <legend>
+                                        <a href="#" class="btn btn-success btn-xs pull-right" id="btnAddBlocForm"><i class="fa fa-plus"> Ajouter</i></a>
+                                        Blocs
+                                    </legend>
+
+                                    <div data-prototype="{% filter escape %}{{ include('WHCmsBundle:Backend:Bloc/page.html.twig', { 'form': form.postBlocs.vars.prototype }) }}{% endfilter %}" id="blocsForm">
+
+                                        {% for bloc in form.postBlocs %}
+                                            {{ include('WHCmsBundle:Backend:Bloc/page.html.twig', { 'form': bloc }) }}
+                                        {% endfor %}
+                                        {% do form.postBlocs.setRendered %}
+
+                                    </div>
+
 
                                 </fieldset>
+
 
                             </div>
 
@@ -129,6 +149,8 @@
 
     </div>
 
+    {% do form.slugReplace.setRendered %}
+
     {{ form_end(form) }}
 
 {% endblock %}
@@ -140,47 +162,8 @@
     {{ elfinder_tinymce_init4('tinycme') }}
     {{ tinymce_init() }}
     {{ form_javascript(form) }}
-
-    <script>
-
-        $(document).ready(function() {
-
-            addEl($('.blocs-container'), $('#btn-add-bloc'), 'BlocNum');
-
-            $(function() {
-
-                $('.blocs-container').sortable({
-                    start: function(event, ui) {
-                        var start_pos = ui.item.index();
-                        ui.item.data('start_pos', start_pos);
-                    },
-                    change: function(event, ui) {
-                        var start_pos = ui.item.data('start_pos');
-                        var index = ui.placeholder.index();
-                        if (start_pos < index) {
-                            $('.blocs-container .bloc:nth-child(' + index + ')').addClass('highlights');
-                        } else {
-                            $('.blocs-container .bloc:eq(' + (index + 1) + ')').addClass('highlights');
-                        }
-                    },
-                    update: function(event, ui) {
-
-                        $('.blocs-container .bloc').removeClass('highlights');
+    {{ Smart.addEl('#blocsForm', '#btnAddBlocForm') }}
 
 
-                        $('.blocs-container .bloc').each(function(index) {
-
-                            $('input.pos', $(this)).val(index);
-
-                        });
-
-                    }
-                });
-
-            });
-
-        });
-
-    </script>
 
 {% endblock %}

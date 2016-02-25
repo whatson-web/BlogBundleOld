@@ -1,0 +1,45 @@
+{% extends "WHCmsBundle:Backend:main.html.twig" %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block ariane %}{{ parent() }}<li><a href="{{ path('wh_admin_cms_blocs') }}">Bloc</a></li>{% endblock %}
+{% block subtitle %}Templates{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        {{ form_start(form, {'action': path('wh_admin_cms_bloc_update', {'Bloc' : Bloc.id}), 'method': 'POST'}) }}
+
+        <div class="well">
+
+            <h1>Gestion d'un bloc d'actu</h1>
+
+            {% include('WHCmsBundle:Backend:Bloc/form.html.twig') %}
+            {% include('WHBlogBundle:Backend:Bloc/form.html.twig') %}
+
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-4 text-right">
+                    <button class="btn btn-success" type="submit">
+                        <i class="fa fa-check"></i> <span class="hidden-mobile">Enregistrer</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+    {{ parent() }}
+    {{ elfinder_tinymce_init4('tinycme') }}
+    {{ tinymce_init() }}
+
+
+{% endblock %}

@@ -41,6 +41,11 @@ abstract class Post extends WHCmsContent
      */
     protected $thumb;
 
+    /**
+     * @ORM\OneToMany(targetEntity="WH\BlogBundle\Entity\PostBloc", mappedBy="post", cascade={"persist", "remove"})
+     */
+    protected $postBlocs;
+
 
     public function __construct() {
 
@@ -144,6 +149,47 @@ abstract class Post extends WHCmsContent
     public function getThumb()
     {
         return $this->thumb;
+    }
+
+
+
+
+    /**
+     * Add postBlocs
+     *
+     * @param \WH\BlogBundle\Entity\PostBloc $postBlocs
+     * @return Post
+     */
+    public function addPostBloc(\WH\BlogBundle\Entity\PostBloc $postBlocs)
+    {
+        $this->postBlocs[] = $postBlocs;
+
+        $postBlocs->setPost($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove postBlocs
+     *
+     * @param \WH\BlogBundle\Entity\PostBloc $postBlocs
+     */
+    public function removePostBloc(\WH\BlogBundle\Entity\PostBloc $postBlocs)
+    {
+        $this->postBlocs->removeElement($postBlocs);
+
+        $postBlocs->setPost(null);
+
+    }
+
+    /**
+     * Get postBlocs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPostBlocs()
+    {
+        return $this->postBlocs;
     }
 
 }

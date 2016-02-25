@@ -51,13 +51,6 @@ class PostRepository extends EntityRepository
                     $qb->orderBy('Post.created', $value);
                     break;
 
-
-                case 'template':
-                    $qb->andWhere('Post.template = :template');
-                    $qb->setParameter('template', $value);
-
-                    break;
-
                 case 'conditions':
 
                     foreach($value as $k => $v) {
@@ -75,6 +68,25 @@ class PostRepository extends EntityRepository
 
                                 break;
 
+                            case 'PostScoreMin' :
+
+                                $qb->andWhere('Post.score >= :'.$k);
+                                $qb->setParameter($k, $v);
+                                break;
+
+                            case 'PostScoreMax' :
+
+                                $qb->andWhere('Post.score <= :'.$k);
+                                $qb->setParameter($k, $v);
+
+                                break;
+
+                            case 'Template' :
+
+                                $qb->andWhere('Template = :'.$k);
+                                $qb->setParameter($k, $v);
+
+                                break;
 
                             default :
 
@@ -94,9 +106,7 @@ class PostRepository extends EntityRepository
 
                     }
 
-
-
-
+                 break;
             }
 
         }
@@ -115,9 +125,9 @@ class PostRepository extends EntityRepository
                 $qb->addSelect('Post')
                     ->addSelect('Template')
                     ->addSelect('Page')
-                    ->getQuery();
+                    ;
 
-                return $qb->getResult();
+                return $qb->getQuery()->getResult();
 
                 break;
 

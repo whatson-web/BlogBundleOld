@@ -1,0 +1,24 @@
+{% extends "WHSmartAdminBundle::popup.html.twig" %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block title %} Créer {% endblock %}
+
+{% block body %}
+
+{{ form_start(form, {'action': path('wh_admin_cms_bloc_create', {'template' : template.id}), 'method': 'POST'}) }}
+
+    <div class="padded">
+
+        {% include('WHCmsBundle:Backend:Bloc/form.html.twig') %}
+        {% include('WHBlogBundle:Backend:Bloc/form.html.twig') %}
+
+    </div>
+
+    {{ Smart.modalSubmitBtn() }}
+
+{{ form_end(form) }}
+
+{{ Smart.modalSubmitAjax() }}
+
+{% endblock %}

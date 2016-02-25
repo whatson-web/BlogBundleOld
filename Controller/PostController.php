@@ -43,7 +43,7 @@ class PostController extends Controller
         $path = $repoPage->getPath($Post->getPage());
 
 
-        return $this->render('WHBlogBundle:Post:front/'.$Post->getTemplate().'.html.twig', array(
+        return $this->render('WHBlogBundle:Post:'.$Post->getTemplate().'.html.twig', array(
             'Post' => $Post,
             'path' => $path,
             'Page' => $Post->getPage()
