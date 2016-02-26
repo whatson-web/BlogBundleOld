@@ -60,7 +60,7 @@
                         <a href="{{ path('wh_admin_blog_post_publish', { 'Post': entity.id }) }}" class="btn btn-xs btn-info"><i class="fa fa-eye"></i></a>
                     </td>
                     <td>{{ entity.created | date('d/m/Y h:i') }}</td>
-                    <td>{{ entity.name }}<br/><small><a href="{{ path('wh_front_post_view', {'Slug' : entity.slug}) }}" target="_blank">{{ path('wh_front_post_view', {'Slug' : entity.slug}) }}</a></small></td>
+                    <td>{{ entity.name }}<br/><small><a href="{{ path('wh_front_post_view', {'slug' : entity.slug}) }}" target="_blank">{{ path('wh_front_post_view', {'slug' : entity.slug}) }}</a></small></td>
                     <td>{{ entity.template.name }}</td>
                     <td>{{ entity.score }}</td>
                 </tr>

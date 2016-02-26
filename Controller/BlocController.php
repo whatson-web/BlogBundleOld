@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BlocController extends Controller
 {
 
-	public function viewAction($slug)
+	public function viewAction($slug, $page = false)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -20,11 +20,25 @@ class BlocController extends Controller
 
         unset($datas['limit']);
 
+        if(!empty($datas['parentDyn'])) {
+
+            $datas['Page.id'] = $page->getId();
+
+            unset($datas['parentDyn']);
+
+        }elseif(!empty($datas['Parent'])) {
+
+            $datas['Page.id'] = $datas['Parent'];
+
+            unset($datas['Parent']);
+        }
+
         $datas = array(
             'limit' => $limit,
             'conditions' => $datas
 
         );
+
 
         $Posts = $em->getRepository('APPBlogBundle:Post')->get('all', $datas);
 

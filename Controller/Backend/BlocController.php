@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use WH\CmsBundle\Form\Backend\BlocType;
 use WH\CmsBundle\Entity\Bloc;
+use APP\CmsBundle\Entity\PageRepository;
 use APP\CmsBundle\Entity\TemplateRepository;
 
 
@@ -36,6 +37,8 @@ class BlocController extends Controller
                     'PostScoreMin'  => $form->get('PostScoreMin')->getData(),
                     'PostScoreMax'  => $form->get('PostScoreMax')->getData(),
                     'Template'      => $form->get('Template')->getData(),
+                    'Page'          => $form->get('Page')->getData(),
+                    'parentDyn'     => $form->get('parentDyn')->getData(),
                 )
             );
 
@@ -80,6 +83,8 @@ class BlocController extends Controller
                     'PostScoreMin'  => $form->get('PostScoreMin')->getData(),
                     'PostScoreMax'  => $form->get('PostScoreMax')->getData(),
                     'Template'      => $form->get('Template')->getData(),
+                    'Page'          => $form->get('Page')->getData(),
+                    'parentDyn'     => $form->get('parentDyn')->getData(),
                 )
             );
 
@@ -110,6 +115,16 @@ class BlocController extends Controller
         $datas = $Bloc->getDatas();
 
         $form
+            ->add(
+                'parentDyn', 'checkbox',
+                array(
+                    'label'         => 'Fonction de la page en cours',
+                    'mapped'        => false,
+                    'required'      => false,
+                    'data'          => (!empty($datas['parentDyn'])) ? $datas['parentDyn'] : null
+
+                )
+            )
             ->add(
                 'limit', 'text',
                 array(
@@ -153,6 +168,24 @@ class BlocController extends Controller
                         },
                     'required'      => false,
                     'data'          => (!empty($datas['Template'])) ? $em->getReference("APPCmsBundle:Template", $datas['Template']->getId()) : null
+
+                )
+            )
+            ->add(
+                'Page', 'entity',
+                array(
+                    'label'         => 'Page parente : ',
+                    'mapped'        => false,
+                    'class'         => 'APPCmsBundle:Page',
+                    'property'      => 'indentedName',
+                    'query_builder' => function(PageRepository $er) {
+
+                            return $er->getChildrenQueryBuilder(null, null, 'root', 'asc', false);
+
+                        }
+                    ,
+                    'required'      => false,
+                    'data'          => (!empty($datas['Page'])) ? $em->getReference("APPCmsBundle:Page", $datas['Page']->getId()) : null
 
                 )
             )
