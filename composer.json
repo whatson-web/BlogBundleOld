@@ -1,5 +1,5 @@
 {
-    "name": "wh/blog-bundle",
+    "name": "wh/blog-bundle-old",
     "type": "symfony-bundle",
     "description": "Symfony WHBlogBundle",
     "keywords": ["BlogBundle", "WH", "Symfony2"],
